@@ -99,34 +99,3 @@ npm test             # run all frontend tests
 { "success": true, "data": { ... } }
 { "success": false, "error": "message", "data": [...validationErrors] }
 ```
-
----
-
-## Feature Highlights
-
-### 1. Resilient API
-- Global error handler catches all unhandled errors and JSON parse failures
-- 404 handler for unknown routes
-- Content-Type validation on mutation endpoints
-- Consistent `{ success, data?, error?, message? }` envelope on every response
-
-### 2. Dual-layer Validation
-- **Server**: hand-written validators in `backend/src/validators/`
-- **Client**: Zod schemas in `frontend/src/types/index.ts`
-- Both enforce: title required, title ≤ 100 chars, valid priority enum, valid status enum
-
-### 3. Debounced Search
-- `useDebounce` hook (300ms) prevents API calls on every keystroke
-- Search dispatches to Zustand store → API GET with `?search=`
-- Clear button resets to full list
-
-### 4. Protected Delete
-- Server checks `x-delete-authorization: team-delete-secret-2024` header
-- Missing or wrong header → 403 Forbidden (task is NOT deleted)
-- Frontend `api/client.ts` attaches header automatically on every delete call
-- UI has two-click confirmation to prevent accidental deletes
-
-### 5. Global State (Zustand)
-- Single `useTaskStore` handles all async operations
-- Optimistic local update after PATCH (status change)
-- Error state displayed in dismissable banner
